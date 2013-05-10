@@ -69,9 +69,9 @@ func (this *Router) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	requestPath := r.URL.Path
 	requestMethod := r.Method
 	var handler http.Handler
+	var ok bool
 
 	for _, route := range this.routes {
-		var ok bool
 		if handler, ok = route.Matches(requestPath, requestMethod); ok {
 			values := url.Values{}
 			for k, v := range route.params {
