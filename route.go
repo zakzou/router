@@ -107,10 +107,10 @@ func (r *Route) parse() {
 
 	for i := 0; i < len(idxs); i += 2 {
 		start, end := idxs[i], idxs[i+1]
-		origin := regexpPattern[start:end]
+		origin := r.pattern[start:end]
 		target := "[^/]+"
 		var paramName string
-		if segments := strings.SplitN(regexpPattern[start+1:end-1], ":", 2); len(segments) == 2 {
+		if segments := strings.SplitN(r.pattern[start+1:end-1], ":", 2); len(segments) == 2 {
 			paramName = segments[1]
 			if t, ok := defaultPattern[segments[0]]; ok {
 				target = t
