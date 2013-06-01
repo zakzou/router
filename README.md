@@ -6,37 +6,42 @@ A HTTP router implemented in Golang
 
 ## Documentation
 
+### initialize
 ```go
-package main
+r := router.NewRouter()
+```
 
-import (
-	"fmt"
-	"github.com/zakzou/router"
-	"net/http"
-)
+### register middleware for all route
+```go
+r.MiddlewareFunc(func(w http.ResponseWriter, r *http.Request) {
+    // do something
+})
+```
 
-type UserFilter struct {
-	router.Middleware
-}
+### register middleware for a route
+```go
+r.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+    // do something
+}).MiddlewareFunc(func(w http.ResponseWriter, r *http.Request) {
+    // do something
+}).Methods("GET", "POST")
+```
 
-func (f *UserFilter) BeforeRequest(w http.ResponseWriter, r *http.Request) {
-	if user_id := r.URL.Query().Get("user_id"); user_id != "10000" {
-		http.Redirect(w, r, "/", 301)
-	}
-}
+### register hook
+```go
+r.HookFunc(route.HookBefore, func(w http.ResponseWriter, r *http.Request) {
+    // do something
+})
 
-func main() {
-	rr := router.NewRouter()
-	rr.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintln(w, "hello world!")
-	})
+r.HookFunc(route.HookAfter, func(w http.ResponseWriter, r *http.Request) {
+    // do something
+})
+```
 
-	ur := rr.SubRouter().Prefix("/user").Middlewares(new(UserFilter)).StrictSlash(true)
-	ur.HandleFunc("/profile/query/<int:user_id>/", func(w http.ResponseWriter, r *http.Request) {
-		user_id := r.URL.Query().Get("user_id")
-		fmt.Fprintln(w, user_id, r.URL.Path)
-	}).Methods("GET", "POST")
 
-	http.ListenAndServe(":9090", rr)
+### run
+```go
+if err := http.ListenAndServe(":9090", r); err != nil {
+    // do something
 }
 ```
