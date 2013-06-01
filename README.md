@@ -38,6 +38,18 @@ r.HookFunc(route.HookAfter, func(w http.ResponseWriter, r *http.Request) {
 })
 ```
 
+### URL For
+`UrlFor()` method lest you dynamically create URLs for a named route
+```go
+r.HandleFunc("/user/profile/query/<int:user_id>/", func(w http.ResponseWriter, r *http.Request) {
+    // do something
+}).Name("profile")
+
+if urls, ok := r.UrlFor("profile", map[string]interface{"user_id": 100001}); ok {
+    fmt.Println(urls)
+}
+```
+
 
 ### run
 ```go
