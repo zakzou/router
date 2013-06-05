@@ -45,8 +45,8 @@ r.HandleFunc("/user/profile/query/<int:user_id>/", func(w http.ResponseWriter, r
     // do something
 }).Name("profile")
 
-if urls, ok := r.UrlFor("profile", map[string]interface{"user_id": 100001}); ok {
-    fmt.Println(urls)
+if urls, ok := r.UrlFor("profile", map[string]interface{}{"user_id": 100001}); ok {
+    println(urls)
 }
 ```
 
