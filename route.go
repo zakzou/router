@@ -116,7 +116,7 @@ func (r *Route) supportsHttpMethod(httpMethod string) bool {
 }
 
 func (r *Route) matches(resourceUri string) (MatchedRoute, bool) {
-	matched := MatchedRoute{params: url.Values{}}
+	matched := MatchedRoute{params: url.Values{}, route: r}
 
 	if out := r.regexp.FindAllStringSubmatch(resourceUri, -1); out != nil {
 		if r.strictSlash {
