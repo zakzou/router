@@ -29,11 +29,11 @@ r.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 
 ### register hook
 ```go
-r.HookFunc(route.HookBefore, func(w http.ResponseWriter, r *http.Request) {
+r.HookFunc(route.HookBeforeRouter, func(w http.ResponseWriter, r *http.Request) {
     // do something
 })
 
-r.HookFunc(route.HookAfter, func(w http.ResponseWriter, r *http.Request) {
+r.HookFunc(route.HookAfterDispatch, func(w http.ResponseWriter, r *http.Request) {
     // do something
 })
 ```
