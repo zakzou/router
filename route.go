@@ -65,6 +65,10 @@ func (r *Route) Middleware(middleware ...http.Handler) *Route {
 	return r
 }
 
+func (r *Route) MiddlewareFunc(f func(http.ResponseWriter, *http.Request)) *Route {
+	return r.Middleware(http.HandlerFunc(f))
+}
+
 func (r *Route) parsePattern() {
 	if r.regexp != nil {
 		return
