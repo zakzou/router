@@ -89,3 +89,37 @@ func TestHook(t *testing.T) {
 		t.Errorf("Code set to [%v]; want [%v]", rw.Code, http.StatusBadRequest)
 	}
 }
+
+func BenchmarkRouteHandler(b *testing.B) {
+	r := NewRouter()
+	r.HandleFunc("/", handlerOk)
+
+	for i := 0; i < b.N; i++ {
+		req, _ := http.NewRequest("GET", "/", nil)
+		rw := httptest.NewRecorder()
+		r.ServeHTTP(rw, req)
+	}
+}
+
+func BenchmarkRouteHandlerParams(b *testing.B) {
+	r := NewRouter()
+	r.HandleFunc("/<string:name>/<int:user_id>/", handlerOk).StrictSlash(true)
+
+	for i := 0; i < b.N; i++ {
+		req, _ := http.NewRequest("GET", "/user/10000/", nil)
+		rw := httptest.NewRecorder()
+		r.ServeHTTP(rw, req)
+	}
+}
+
+func BenchmarkServeMux(b *testing.B) {
+	r := NewRouter()
+	r.HandleFunc("/", handlerOk)
+
+	req, _ := http.NewRequest("GET", "/", nil)
+	rw := httptest.NewRecorder()
+
+	for i := 0; i < b.N; i++ {
+		r.ServeHTTP(rw, req)
+	}
+}
