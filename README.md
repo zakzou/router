@@ -57,3 +57,9 @@ if err := http.ListenAndServe(":9090", r); err != nil {
     // do something
 }
 ```
+
+
+License
+==============
+
+MIT: http://rem.mit-license.org
